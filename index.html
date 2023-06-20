@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Color Game</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <style>
+    .box-container {
+      perspective: 1000px;
+    }
+    .box {
+      width: 200px;
+      height: 200px;
+      position: relative;
+      margin: 10px;
+      transform-style: preserve-3d;
+      transition: transform 0.5s, background-color 0.1s;
+    }
+    .side {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-color: white;
+      border: 1px solid black;
+      text-align: center;
+      line-height: 200px;
+      font-size: 24px;
+      font-weight: bold;
+    }
+    .front {
+      transform: translateZ(100px);
+    }
+    .back {
+      transform: rotateY(180deg) translateZ(100px);
+    }
+    .left {
+      transform: rotateY(-90deg) translateZ(100px);
+    }
+    .right {
+      transform: rotateY(90deg) translateZ(100px);
+    }
+    .flip-animation {
+      animation: flip 5s;
+    }
+    @keyframes flip {
+      0% { transform: rotateY(0deg); }
+      50% { transform: rotateY(-180deg); }
+      100% { transform: rotateY(-360deg); }
+    }
+    .row {
+      position: relative;
+      top: 58px;
+      left: 70px;
+    }
+  </style>
+</head>
+<body style="color: white; background: url(mis_wall.jpg);
+      background-repeat: no-repeat;
+      background-size: cover;">
+  <div class="container" style="text-align: center; margin-top: 200px;">
+    <h1>Color Game</h1>
+    <div class="row">
+      <div class="col-md-4 box-container">
+        <div class="box" id="box1">
+          <div class="side front"></div>
+          <div class="side back"></div>
+          <div class="side left"></div>
+          <div class="side right"></div>
+        </div>
+      </div>
+      <div class="col-md-4 box-container">
+        <div class="box" id="box2">
+          <div class="side front"></div>
+          <div class="side back"></div>
+          <div class="side left"></div>
+          <div class="side right"></div>
+        </div>
+      </div>
+      <div class="col-md-4 box-container">
+        <div class="box" id="box3">
+          <div class="side front"></div>
+          <div class="side back"></div>
+          <div class="side left"></div>
+          <div class="side right"></div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <button class="btn btn-primary" onclick="changeColors()">Change Colors</button>
+  </div>
+
+  <script>
+    function getRandomColor() {
+      var colors = ['red', 'green', 'blue', 'pink', 'yellow', 'white'];
+      var randomIndex = Math.floor(Math.random() * colors.length);
+      return colors[randomIndex];
+    }
+
+    function changeColors() {
+      var box1 = document.getElementById('box1');
+      var box2 = document.getElementById('box2');
+      var box3 = document.getElementById('box3');
+      var resultLabel = document.getElementById('resultLabel');
+
+      // Remove flip-animation class to reset the animation
+      box1.classList.remove('flip-animation');
+      box2.classList.remove('flip-animation');
+      box3.classList.remove('flip-animation');
+
+      setTimeout(function() {
+        // Apply flip-animation class to trigger the animation
+        box1.classList.add('flip-animation');
+        box2.classList.add('flip-animation');
+        box3.classList.add('flip-animation');
+
+        setTimeout(function() {
+          var intervalId = setInterval(function() {
+            var color1 = getRandomColor();
+            var color2 = getRandomColor();
+            var color3 = getRandomColor();
+
+            var sides1 = box1.getElementsByClassName('side');
+            for (var i = 0; i < sides1.length; i++) {
+              sides1[i].style.backgroundColor = color1;
+              sides1[i].textContent = color1.toUpperCase();
+            }
+
+            var sides2 = box2.getElementsByClassName('side');
+            for (var i = 0; i < sides2.length; i++) {
+              sides2[i].style.backgroundColor = color2;
+              sides2[i].textContent = color2.toUpperCase();
+            }
+
+            var sides3 = box3.getElementsByClassName('side');
+            for (var i = 0; i < sides3.length; i++) {
+              sides3[i].style.backgroundColor = color3;
+              sides3[i].textContent = color3.toUpperCase();
+            }
+          }, 100);
+
+          setTimeout(function() {
+            clearInterval(intervalId);
+
+            var sides1 = box1.getElementsByClassName('side');
+            var color1 = sides1[0].style.backgroundColor;
+
+            var sides2 = box2.getElementsByClassName('side');
+            var color2 = sides2[0].style.backgroundColor;
+
+            var sides3 = box3.getElementsByClassName('side');
+            var color3 = sides3[0].style.backgroundColor;
+
+          }, 5000);
+        }, 100);
+      }, 100);
+    }
+  </script>
+</body>
+</html>
